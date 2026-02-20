@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <title>Workshop ALME</title>
   <style>
 * {
@@ -16,7 +17,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
+   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
   padding: 30px; /* margem lateral fixa */
 }
@@ -28,6 +29,7 @@ body {
   position: absolute;
   background: white;
   padding: 50px;
+  
   border-radius: 18px;
   
 }
@@ -63,12 +65,50 @@ p {
   font-size: 14px;
   margin-bottom: 8px;
 }
+
+.titulo {
+  display: flex;
+  align-items: center;      /* alinha verticalmente */
+  justify-content: space-between;
+  padding-top: 60px;
+}
+
+.titulo h2 {
+  margin: 0;
+  font-size: 60px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.titulo img {
+  width: 120px;   /* ajuste o tamanho aqui */
+  height: auto;
+  margin-right: 10px;
+ 
+  }
+   .titulo p {
+  
+position: absolute;
+font-size: 20px;
+margin-top: 190px;
+color: #000000;
+
+
+}
   </style>
 </head>
 <body>
 
 <div class="box">
-  <h2>Cadastro Workshop</h2>
+  <div class="titulo">
+    
+  <h2>ALME</h2>
+  <br>
+  
+  <p>Cadastro - Workshop</p>
+  <img src="alme.png" alt="ALME">
+</div>
+<br>
 
   <input id="nome" placeholder="Digite seu nome e sobrenome">
   <input id="whatsapp" placeholder="Insira seu WhatsApp Profissional">

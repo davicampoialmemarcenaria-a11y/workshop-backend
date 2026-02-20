@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+print("DATABASE_URL:", DATABASE_URL)
 
 class Lead(BaseModel):
     nome: str
@@ -59,3 +60,5 @@ def cadastrar_lead(lead: Lead):
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
+    
+    'teste'

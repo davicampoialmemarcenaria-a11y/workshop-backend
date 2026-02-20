@@ -25,10 +25,11 @@ print("DATABASE_URL:", DATABASE_URL)
 
 class Lead(BaseModel):
     nome: str
-    email: str
-    telefone: str
-    perfil: str
-    investimento: str
+    whatsapp: str
+    instagram: str
+    regiao: str
+    tipo_trabalho: str
+    gerencia_obra: str
 
 # 👇 AQUI FAZ ABRIR O INDEX NO ROOT
 @app.get("/")
@@ -42,15 +43,17 @@ def cadastrar_lead(lead: Lead):
         cur = conn.cursor()
 
         cur.execute("""
-            INSERT INTO leads_workshop (nome, email, telefone, perfil, investimento)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (
-            lead.nome,
-            lead.email,
-            lead.telefone,
-            lead.perfil,
-            lead.investimento
-        ))
+    INSERT INTO leads_workshop 
+    (nome, whatsapp, instagram, regiao, tipo_trabalho, gerencia_obra)
+    VALUES (%s, %s, %s, %s, %s, %s)
+""", (
+    lead.nome,
+    lead.whatsapp,
+    lead.instagram,
+    lead.regiao,
+    lead.tipo_trabalho,
+    lead.gerencia_obra
+))
 
         conn.commit()
         cur.close()

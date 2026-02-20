@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workshop ALME</title>
   <style>
     body {
@@ -15,6 +16,7 @@
     .box {
       background: white;
       padding: 40px;
+      position: absolute;
       border-radius: 12px;
       width: 450px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
@@ -42,6 +44,12 @@
     button:hover {
       opacity: 0.9;
     }
+    p {
+        color: #6a6a6a;
+        font-size: 13px;
+
+    }
+
   </style>
 </head>
 <body>
@@ -53,6 +61,8 @@
   <input id="whatsapp" placeholder="Insira seu WhatsApp Profissional">
   <input id="instagram" placeholder="Digite seu Instagram profissional">
 
+
+  <p>Em qual região predomina-se seu trabalho?</p>
   <select id="regiao">
     <option>Atibaia</option>
     <option>São Paulo</option>
@@ -62,12 +72,12 @@
     <option>Regiões litorâneas</option>
     <option>Outro</option>
   </select>
-
+<p>Em qual tipo seu trabalho mais se enquadra?</p>
   <select id="tipo_trabalho">
     <option>Projeto Arquitetônico</option>
     <option>Interiores</option>
   </select>
-
+<p>Você costuma fazer um gerenciamento de suas obras?</p>
   <select id="gerencia_obra">
     <option>Sim</option>
     <option>Não</option>

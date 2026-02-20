@@ -142,12 +142,18 @@ color: #000000;
     <option>Não</option>
   </select>
 
-  <button onclick="enviar()">Cadastrar</button>
+  <button id="btn-cadastrar" onclick="enviar()">Cadastrar</button>
   <div id="mensagem-sucesso" style="display:none; margin-top: 20px; color: green; font-weight: bold;"></div>
 </div>
 
 <script>
 function enviar() {
+  const btn = document.getElementById("btn-cadastrar");
+  const msg = document.getElementById("mensagem-sucesso");
+
+  // Bloqueia o botão imediatamente
+  btn.disabled = true;
+  btn.innerText = "Enviando...";
 
   fetch("/cadastro", {
     method: "POST",
@@ -164,23 +170,24 @@ function enviar() {
     })
   })
   .then(res => res.json())
-.then(data => {
-  const msg = document.getElementById("mensagem-sucesso"); // <-- AQUI
-  if (data.status === "success") {
-    alert("Cadastro realizado com sucesso!");
-    msg.style.display = "block"; // Mostra a div
-    msg.innerHTML = 'Obrigado, seu cadastro foi enviado! <br> Clique no link a seguir para acompanhar o Workshop: <a href="https://link-do-workshop.com" target="_blank" style="color: blue; text-decoration: underline;">Acompanhar Workshop</a>';
-  } else {
-    alert("Erro ao cadastrar.");
-    console.log(data);
-    msg.style.display = "none"; // Esconde a div se der erro
-  }
-})
-.catch(error => {
-  alert("Erro ao enviar cadastro.");
-  console.error(error);
-});
-
+  .then(data => {
+    if (data.status === "success") {
+      alert("Cadastro realizado com sucesso!");
+      msg.style.display = "block";
+      msg.innerHTML = 'Obrigado, seu cadastro foi enviado! <br> Clique no link a seguir para acompanhar o Workshop: <a href="https://link-do-workshop.com" target="_blank" style="color: brown; text-decoration: underline;">Conteúdo - ALME</a>';
+    } else {
+      alert("Erro ao cadastrar.");
+      msg.style.display = "none";
+      btn.disabled = false;   // desbloqueia se der erro
+      btn.innerText = "Cadastrar";
+    }
+  })
+  .catch(error => {
+    alert("Erro ao enviar cadastro.");
+    console.error(error);
+    btn.disabled = false;     // desbloqueia em caso de erro
+    btn.innerText = "Cadastrar";
+  });
 }
 </script>
 

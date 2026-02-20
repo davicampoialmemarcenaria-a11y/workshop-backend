@@ -14,14 +14,17 @@
     }
 
     .box {
-      background: white;
-      padding: 40px;
-      position: absolute;
-      border-radius: 12px;
-      width: 450px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 650px;
+  max-width: 90%;
+  padding: 60px;
+  background: white;
+  border-radius: 18px;
+}
     input, select {
       width: 100%;
       margin-bottom: 15px;
@@ -47,7 +50,24 @@
     p {
         color: #6a6a6a;
         font-size: 13px;
+@media (max-width: 768px) {
 
+  .box {
+    position: relative;      /* REMOVE O ABSOLUTE */
+    top: auto;
+    left: auto;
+    transform: none;
+
+    width: 100%;
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 30px 20px;
+  }
+
+  body {
+    display: block;
+  }
+}
     }
 
   </style>

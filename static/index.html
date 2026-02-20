@@ -143,6 +143,7 @@ color: #000000;
   </select>
 
   <button onclick="enviar()">Cadastrar</button>
+  <div id="mensagem-sucesso" style="display:none; margin-top: 20px; color: green; font-weight: bold;"></div>
 </div>
 
 <script>
@@ -163,18 +164,22 @@ function enviar() {
     })
   })
   .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      alert("Cadastro realizado com sucesso!");
-    } else {
-      alert("Erro ao cadastrar.");
-      console.log(data);
-    }
-  })
-  .catch(error => {
-    alert("Erro ao enviar cadastro.");
-    console.error(error);
-  });
+.then(data => {
+  const msg = document.getElementById("mensagem-sucesso"); // <-- AQUI
+  if (data.status === "success") {
+    alert("Cadastro realizado com sucesso!");
+    msg.style.display = "block"; // Mostra a div
+    msg.innerHTML = 'Obrigado, seu cadastro foi enviado! <br> Clique no link a seguir para acompanhar o Workshop: <a href="https://link-do-workshop.com" target="_blank" style="color: blue; text-decoration: underline;">Acompanhar Workshop</a>';
+  } else {
+    alert("Erro ao cadastrar.");
+    console.log(data);
+    msg.style.display = "none"; // Esconde a div se der erro
+  }
+})
+.catch(error => {
+  alert("Erro ao enviar cadastro.");
+  console.error(error);
+});
 
 }
 </script>

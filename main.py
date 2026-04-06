@@ -1,0 +1,74 @@
+import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+import psycopg2
+
+app = FastAPI()
+
+# Servir arquivos estáticos
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Liberar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Banco de dados
+DATABASE_URL = os.getenv("DATABASE_URL")
+print("DATABASE_URL:", DATABASE_URL)
+
+# Modelo do formulário
+class Lead(BaseModel):
+    nome: str
+    whatsapp: str
+    instagram: str
+    regiao: str
+    tipo_trabalho: str
+    gerencia_obra: str
+
+
+# Abrir o formulário no root
+@app.get("/")
+def serve_index():
+    return FileResponse("static/index.html")
+
+@app.api_route("/ping", methods=["GET", "HEAD"])
+def ping():
+    return {"status": "alive"}
+
+
+# Cadastro do lead
+@app.post("/cadastro")
+def cadastrar_lead(lead: Lead):
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
+
+        cur.execute("""
+            INSERT INTO leads_workshop 
+            (nome, whatsapp, instagram, regiao, tipo_trabalho, gerencia_obra)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            lead.nome,
+            lead.whatsapp,
+            lead.instagram,
+            lead.regiao,
+            lead.tipo_trabalho,
+            lead.gerencia_obra
+        ))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return {"status": "success"}
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}

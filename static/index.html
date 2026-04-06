@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <title>Workshop ALME</title>
+
+  <style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: white;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.box {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 50px;
+  border-radius: 18px;
+}
+
+input, select {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px; /* 🔥 resolve o zoom no iPhone */
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  background: #733900;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo p {
+  font-size: 50px;
+  color: #000;
+}
+
+.titulo img {
+  width: 85px;
+}
+
+.cadastro p {
+  font-size: 20px;
+  color: #000;
+}
+
+.erro {
+  color: red;
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* 🔥 POPUP */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box {
+  background: #733900;
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 420px;
+  width: 90%;
+  color: white;
+}
+
+.popup-box h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.popup-box p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: white;
+}
+
+.btn-pdf {
+  display: inline-block;
+  background: white;
+  color: #733900;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <div class="titulo">
+    <p>ALME</p>
+    <img src="/static/alme.png">
+  </div>
+
+  <div class="cadastro">
+    <p>Cadastro - Workshop</p>
+  </div>
+
+  <br>
+
+  <input id="nome" placeholder="Digite seu nome e sobrenome">
+  <input id="whatsapp" placeholder="Insira seu WhatsApp Profissional">
+  <input id="instagram" placeholder="Digite seu Instagram profissional">
+
+  <p>Em qual região predomina-se seu trabalho?</p>
+  <select id="regiao">
+    <option value="" disabled selected>Selecione sua região</option>
+    <option>Atibaia</option>
+    <option>São Paulo</option>
+    <option>Campinas</option>
+    <option>Bragança Paulista</option>
+    <option>Rio de Janeiro</option>
+    <option>Regiões litorâneas</option>
+    <option>Outro</option>
+  </select>
+
+  <p>Em qual tipo seu trabalho mais se enquadra?</p>
+  <select id="tipo_trabalho">
+    <option value="" disabled selected>Selecione uma opção</option>
+    <option>Projeto Arquitetônico</option>
+    <option>Interiores</option>
+    <option>Construções e reformas</option>
+    <option>Estudante</option>
+    <option>Outros</option>
+  </select>
+
+  <p>Você costuma fazer gerenciamento de suas obras?</p>
+  <select id="gerencia_obra">
+    <option value="" disabled selected>Selecione uma opção</option>
+    <option>Sim</option>
+    <option>Não</option>
+  </select>
+
+  <div id="erro" class="erro"></div>
+
+  <button id="btn-cadastrar" onclick="enviar()">Cadastrar</button>
+
+</div>
+
+<!-- 🔥 POPUP -->
+<div id="popup" class="popup-overlay">
+  <div class="popup-box">
+    <h2>Obrigado(a), seu cadastro foi realizado!</h2>
+    <p>Acesse o material do Workshop aqui:</p>
+
+    <a href="/static/Workshop2_Alme.pdf" target="_blank" class="btn-pdf">
+      📄 Baixar PDF
+    </a>
+  </div>
+</div>
+
+<script>
+function enviar() {
+
+  const nome = document.getElementById("nome").value.trim();
+  const whatsapp = document.getElementById("whatsapp").value.trim();
+  const instagram = document.getElementById("instagram").value.trim();
+  const regiao = document.getElementById("regiao").value;
+  const tipo = document.getElementById("tipo_trabalho").value;
+  const gerencia = document.getElementById("gerencia_obra").value;
+
+  const erro = document.getElementById("erro");
+  const btn = document.getElementById("btn-cadastrar");
+
+  erro.innerText = "";
+
+  if (!nome || !whatsapp || !instagram || !regiao || !tipo || !gerencia) {
+    erro.innerText = "Por favor, preencha todos os campos!";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerText = "Enviando...";
+
+  fetch("/cadastro", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nome,
+      whatsapp,
+      instagram,
+      regiao,
+      tipo_trabalho: tipo,
+      gerencia_obra: gerencia
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+
+      // 🔥 MOSTRA POPUP
+      document.getElementById("popup").style.display = "flex";
+
+    } else {
+      erro.innerText = "Erro ao cadastrar.";
+      btn.disabled = false;
+      btn.innerText = "Cadastrar";
+    }
+  })
+  .catch(error => {
+    erro.innerText = "Erro ao enviar cadastro.";
+    console.error(error);
+    btn.disabled = false;
+    btn.innerText = "Cadastrar";
+  });
+}
+
+// fechar clicando fora
+window.onclick = function(e) {
+  const popup = document.getElementById("popup");
+  if (e.target === popup) {
+    popup.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>
